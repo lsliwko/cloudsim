@@ -8,7 +8,9 @@
 package org.cloudbus.cloudsim;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.lists.PeList;
@@ -43,7 +45,7 @@ public class Host {
 	private VmScheduler vmScheduler;
 
 	/** The list of VMs assigned to the host. */
-	private final List<? extends Vm> vmList = new ArrayList<Vm>();
+	private final Set<? extends Vm> vmList = new HashSet<Vm>();
 
 	/** The Processing Elements (PEs) of the host, that
          * represent the CPU cores of it, and thus, its processing capacity. */
@@ -53,7 +55,7 @@ public class Host {
 	private boolean failed;
 
 	/** The VMs migrating in. */
-	private final List<Vm> vmsMigratingIn = new ArrayList<Vm>();
+	private final Set<Vm> vmsMigratingIn = new HashSet<Vm>();
 
 	/** The datacenter where the host is placed. */
 	private Datacenter datacenter;
@@ -538,8 +540,8 @@ public class Host {
 	 * @return the vm list
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Vm> List<T> getVmList() {
-		return (List<T>) vmList;
+	public <T extends Vm> Set<T> getVmList() {
+		return (Set<T>) vmList;
 	}
 
 	/**
@@ -608,7 +610,7 @@ public class Host {
 	 * 
 	 * @return the vms migrating in
 	 */
-	public List<Vm> getVmsMigratingIn() {
+	public Set<Vm> getVmsMigratingIn() {
 		return vmsMigratingIn;
 	}
 

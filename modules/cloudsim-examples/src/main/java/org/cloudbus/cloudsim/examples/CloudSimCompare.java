@@ -47,12 +47,12 @@ public class CloudSimCompare {
 	private static Set<Cloudlet> cloudletList;
 
 	/** The vmlist. */
-	private static List<Vm> vmlist;
+	private static Set<Vm> vmlist;
 
-	private static List<Vm> createVM(int userId, int vms) {
+	private static Set<Vm> createVM(int userId, int vms) {
 
 		//Creates a container to store VMs. This list is passed to the broker later
-		LinkedList<Vm> list = new LinkedList<Vm>();
+		HashSet<Vm> list = new HashSet<Vm>();
 
 		//VM Parameters
 		long size = 10000; //image size (MB)

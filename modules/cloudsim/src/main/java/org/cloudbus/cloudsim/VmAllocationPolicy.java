@@ -10,6 +10,7 @@ package org.cloudbus.cloudsim;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * VmAllocationPolicy is an abstract class that represents the provisioning policy of hosts to
@@ -70,7 +71,7 @@ public abstract class VmAllocationPolicy {
          * or have clear documentation. The only sublcass is the {@link VmAllocationPolicySimple}. 
          * 
 	 */
-	public abstract List<Map<String, Object>> optimizeAllocation(List<? extends Vm> vmList);
+	public abstract List<Map<String, Object>> optimizeAllocation(Set<? extends Vm> vmList);
 
 	/**
 	 * Releases the host used by a VM.

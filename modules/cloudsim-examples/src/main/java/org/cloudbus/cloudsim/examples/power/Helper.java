@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -62,8 +63,8 @@ public class Helper {
 	 * 
 	 * @return the list< vm>
 	 */
-	public static List<Vm> createVmList(int brokerId, int vmsNumber) {
-		List<Vm> vms = new ArrayList<Vm>();
+	public static Set<Vm> createVmList(int brokerId, int vmsNumber) {
+		Set<Vm> vms = new HashSet<Vm>();
 		for (int i = 0; i < vmsNumber; i++) {
 			int vmType = i / (int) Math.ceil((double) vmsNumber / Constants.VM_TYPES);
 			vms.add(new PowerVm(
@@ -216,7 +217,7 @@ public class Helper {
 	 * @param vms the vms
 	 * @return the times before vm migration
 	 */
-	public static List<Double> getTimesBeforeVmMigration(List<Vm> vms) {
+	public static List<Double> getTimesBeforeVmMigration(Set<Vm> vms) {
 		List<Double> timeBeforeVmMigration = new LinkedList<Double>();
 		for (Vm vm : vms) {
 			boolean previousIsInMigration = false;
@@ -245,7 +246,7 @@ public class Helper {
 	 */
 	public static void printResults(
 			PowerDatacenter datacenter,
-			List<Vm> vms,
+			Set<Vm> vms,
 			double lastClock,
 			String experimentName,
 			boolean outputInCsv,
@@ -561,7 +562,7 @@ public class Helper {
 	 * @param vms the vms
 	 * @return the sla metrics
 	 */
-	protected static Map<String, Double> getSlaMetrics(List<Vm> vms) {
+	protected static Map<String, Double> getSlaMetrics(Set<Vm> vms) {
 		Map<String, Double> metrics = new HashMap<String, Double>();
 		List<Double> slaViolation = new LinkedList<Double>();
 		double totalAllocated = 0;

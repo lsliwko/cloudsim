@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.core.CloudSim;
 
@@ -184,7 +185,7 @@ public class VmAllocationPolicySimple extends VmAllocationPolicy {
 	}
 
 	@Override
-	public List<Map<String, Object>> optimizeAllocation(List<? extends Vm> vmList) {
+	public List<Map<String, Object>> optimizeAllocation(Set<? extends Vm> vmList) {
 		// TODO Auto-generated method stub
 		return null;
 	}

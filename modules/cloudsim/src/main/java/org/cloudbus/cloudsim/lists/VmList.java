@@ -9,6 +9,7 @@
 package org.cloudbus.cloudsim.lists;
 
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Vm;
 
@@ -46,7 +47,7 @@ public class VmList {
          * effect on the entire project and in the creation of simulations
          * that has to be priorly assessed.
 	 */
-	public static <T extends Vm> T getById(List<T> vmList, int id) {
+	public static <T extends Vm> T getById(Set<T> vmList, int id) {
 		for (T vm : vmList) {
 			if (vm.getId() == id) {
 				return vm;
@@ -65,7 +66,7 @@ public class VmList {
 	 * @pre $none
 	 * @post $none
 	 */
-	public static <T extends Vm> T getByIdAndUserId(List<T> vmList, int id, int userId) {
+	public static <T extends Vm> T getByIdAndUserId(Set<T> vmList, int id, int userId) {
 		for (T vm : vmList) {
 			if (vm.getId() == id && vm.getUserId() == userId) {
 				return vm;

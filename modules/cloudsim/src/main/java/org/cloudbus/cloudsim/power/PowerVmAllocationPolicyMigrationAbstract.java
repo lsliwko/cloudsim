@@ -115,7 +115,7 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends PowerVmAl
 	 * @return the array list< hash map< string, object>>
 	 */
 	@Override
-	public List<Map<String, Object>> optimizeAllocation(List<? extends Vm> vmList) {
+	public List<Map<String, Object>> optimizeAllocation(Set<? extends Vm> vmList) {
 		ExecutionTimeMeasurer.start("optimizeAllocationTotal");
 
 		ExecutionTimeMeasurer.start("optimizeAllocationHostSelection");
@@ -128,7 +128,7 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends PowerVmAl
 		saveAllocation();
 
 		ExecutionTimeMeasurer.start("optimizeAllocationVmSelection");
-		List<? extends Vm> vmsToMigrate = getVmsToMigrateFromHosts(overUtilizedHosts);
+		Set<? extends Vm> vmsToMigrate = getVmsToMigrateFromHosts(overUtilizedHosts);
 		getExecutionTimeHistoryVmSelection().add(ExecutionTimeMeasurer.end("optimizeAllocationVmSelection"));
 
 		Log.printLine("Reallocation of VMs from the over-utilized hosts:");
@@ -187,7 +187,7 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends PowerVmAl
 			excludedHostsForFindingUnderUtilizedHost.add(underUtilizedHost);
 			excludedHostsForFindingNewVmPlacement.add(underUtilizedHost);
 
-			List<? extends Vm> vmsToMigrateFromUnderUtilizedHost = getVmsToMigrateFromUnderUtilizedHost(underUtilizedHost);
+			Set<? extends Vm> vmsToMigrateFromUnderUtilizedHost = getVmsToMigrateFromUnderUtilizedHost(underUtilizedHost);
 			if (vmsToMigrateFromUnderUtilizedHost.isEmpty()) {
 				continue;
 			}
@@ -314,11 +314,12 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends PowerVmAl
 	 * @return the new vm placement map
 	 */
 	protected List<Map<String, Object>> getNewVmPlacement(
-			List<? extends Vm> vmsToMigrate,
+			Set<? extends Vm> vmsToMigrate,
 			Set<? extends Host> excludedHosts) {
 		List<Map<String, Object>> migrationMap = new LinkedList<Map<String, Object>>();
-		PowerVmList.sortByCpuUtilization(vmsToMigrate);
-		for (Vm vm : vmsToMigrate) {
+		List<Vm> vmsToMigrateList	= new LinkedList<Vm>(vmsToMigrate);
+		PowerVmList.sortByCpuUtilization(vmsToMigrateList);
+		for (Vm vm : vmsToMigrateList) {
 			PowerHost allocatedHost = findHostForVm(vm, excludedHosts);
 			if (allocatedHost != null) {
 				allocatedHost.vmCreate(vm);
@@ -341,11 +342,12 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends PowerVmAl
 	 * @return the new vm placement from under utilized host
 	 */
 	protected List<Map<String, Object>> getNewVmPlacementFromUnderUtilizedHost(
-			List<? extends Vm> vmsToMigrate,
+			Set<? extends Vm> vmsToMigrate,
 			Set<? extends Host> excludedHosts) {
 		List<Map<String, Object>> migrationMap = new LinkedList<Map<String, Object>>();
-		PowerVmList.sortByCpuUtilization(vmsToMigrate);
-		for (Vm vm : vmsToMigrate) {
+		List<Vm> vmsToMigrateList	= new LinkedList<Vm>(vmsToMigrate);
+		PowerVmList.sortByCpuUtilization(vmsToMigrateList);
+		for (Vm vm : vmsToMigrateList) {
 			PowerHost allocatedHost = findHostForVm(vm, excludedHosts);
 			if (allocatedHost != null) {
 				allocatedHost.vmCreate(vm);
@@ -373,9 +375,9 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends PowerVmAl
 	 * @param overUtilizedHosts the over utilized hosts
 	 * @return the VMs to migrate from hosts
 	 */
-	protected List<? extends Vm>
+	protected Set<? extends Vm>
 	  getVmsToMigrateFromHosts(List<PowerHostUtilizationHistory> overUtilizedHosts) {
-		List<Vm> vmsToMigrate = new LinkedList<Vm>();
+		Set<Vm> vmsToMigrate = new HashSet<Vm>();
 		for (PowerHostUtilizationHistory host : overUtilizedHosts) {
 			while (true) {
 				Vm vm = getVmSelectionPolicy().getVmToMigrate(host);
@@ -398,8 +400,8 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends PowerVmAl
 	 * @param host the host
 	 * @return the vms to migrate from under utilized host
 	 */
-	protected List<? extends Vm> getVmsToMigrateFromUnderUtilizedHost(PowerHost host) {
-		List<Vm> vmsToMigrate = new LinkedList<Vm>();
+	protected Set<? extends Vm> getVmsToMigrateFromUnderUtilizedHost(PowerHost host) {
+		Set<Vm> vmsToMigrate = new HashSet<Vm>();
 		for (Vm vm : host.getVmList()) {
 			if (!vm.isInMigration()) {
 				vmsToMigrate.add(vm);

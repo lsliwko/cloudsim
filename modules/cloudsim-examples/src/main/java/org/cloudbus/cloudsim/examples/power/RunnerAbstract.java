@@ -53,7 +53,7 @@ public abstract class RunnerAbstract {
 	protected static Set<Cloudlet> cloudletList;
 
 	/** The vm list. */
-	protected static List<Vm> vmList;
+	protected static Set<Vm> vmList;
 
 	/** The host list. */
 	protected static List<PowerHost> hostList;

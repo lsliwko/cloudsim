@@ -10,10 +10,12 @@ package org.cloudbus.cloudsim.network.datacenter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -131,7 +133,7 @@ public class Switch extends SimEntity {
 
 	/** 
          * @todo The attribute doesn't appear to be used */
-	public List<Vm> BagofTaskVm = new ArrayList<Vm>();
+	public Set<Vm> BagofTaskVm = new HashSet<Vm>();
 
         /**
          * The time the switch spends to process a received packet.

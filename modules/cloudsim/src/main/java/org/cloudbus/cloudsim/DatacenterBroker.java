@@ -34,10 +34,10 @@ import org.cloudbus.cloudsim.lists.VmList;
 public class DatacenterBroker extends SimEntity {
 
 	/** The list of VMs submitted to be managed by the broker. */
-	protected List<? extends Vm> vmList;
+	protected Set<? extends Vm> vmList;
 
 	/** The list of VMs created by the broker. */
-	protected List<? extends Vm> vmsCreatedList;
+	protected Set<? extends Vm> vmsCreatedList;
 
 	/** The list of cloudlet submitted to the broker. 
          * @see #submitCloudletList(java.util.List) 
@@ -88,8 +88,8 @@ public class DatacenterBroker extends SimEntity {
 	public DatacenterBroker(String name) throws Exception {
 		super(name);
 
-		setVmList(new LinkedList<Vm>());
-		setVmsCreatedList(new LinkedList<Vm>());
+		setVmList(new HashSet<Vm>());
+		setVmsCreatedList(new HashSet<Vm>());
 		setCloudletList(new HashSet<Cloudlet>());
 		setCloudletSubmittedList(new HashSet<Cloudlet>());
 		setCloudletReceivedList(new HashSet<Cloudlet>());
@@ -113,7 +113,7 @@ public class DatacenterBroker extends SimEntity {
 	 * @pre list !=null
 	 * @post $none
 	 */
-	public void submitVmList(List<? extends Vm> list) {
+	public void submitVmList(Set<? extends Vm> list) {
 		getVmList().addAll(list);
 	}
 
@@ -352,11 +352,13 @@ public class DatacenterBroker extends SimEntity {
 	protected void submitCloudlets() {
 		int vmIndex = 0;
 		Set<Cloudlet> successfullySubmitted = new HashSet<Cloudlet>();
+		
+		List<Vm> list	= new ArrayList<Vm>(getVmsCreatedList());
 		for (Cloudlet cloudlet : getCloudletList()) {
 			Vm vm;
 			// if user didn't bind this cloudlet and it has not been executed yet
 			if (cloudlet.getVmId() == -1) {
-				vm = getVmsCreatedList().get(vmIndex);
+				vm = list.get(vmIndex);
 			} else { // submit to the specific vm
 				vm = VmList.getById(getVmsCreatedList(), cloudlet.getVmId());
 				if (vm == null) { // vm was not created
@@ -376,7 +378,7 @@ public class DatacenterBroker extends SimEntity {
 			cloudlet.setVmId(vm.getId());
 			sendNow(getVmsToDatacentersMap().get(vm.getId()), CloudSimTags.CLOUDLET_SUBMIT, cloudlet);
 			cloudletsSubmitted++;
-			vmIndex = (vmIndex + 1) % getVmsCreatedList().size();
+			vmIndex = (vmIndex + 1) % list.size();
 			getCloudletSubmittedList().add(cloudlet);
 			successfullySubmitted.add(cloudlet);
 		}
@@ -428,8 +430,8 @@ public class DatacenterBroker extends SimEntity {
 	 * @return the vm list
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Vm> List<T> getVmList() {
-		return (List<T>) vmList;
+	public <T extends Vm> Set<T> getVmList() {
+		return (Set<T>) vmList;
 	}
 
 	/**
@@ -438,7 +440,7 @@ public class DatacenterBroker extends SimEntity {
 	 * @param <T> the generic type
 	 * @param vmList the new vm list
 	 */
-	protected <T extends Vm> void setVmList(List<T> vmList) {
+	protected <T extends Vm> void setVmList(Set<T> vmList) {
 		this.vmList = vmList;
 	}
 
@@ -512,8 +514,8 @@ public class DatacenterBroker extends SimEntity {
 	 * @return the vm list
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Vm> List<T> getVmsCreatedList() {
-		return (List<T>) vmsCreatedList;
+	public <T extends Vm> Set<T> getVmsCreatedList() {
+		return (Set<T>) vmsCreatedList;
 	}
 
 	/**
@@ -522,7 +524,7 @@ public class DatacenterBroker extends SimEntity {
 	 * @param <T> the generic type
 	 * @param vmsCreatedList the vms created list
 	 */
-	protected <T extends Vm> void setVmsCreatedList(List<T> vmsCreatedList) {
+	protected <T extends Vm> void setVmsCreatedList(Set<T> vmsCreatedList) {
 		this.vmsCreatedList = vmsCreatedList;
 	}
 

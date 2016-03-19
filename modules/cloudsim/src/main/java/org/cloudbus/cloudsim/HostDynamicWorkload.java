@@ -9,8 +9,10 @@
 package org.cloudbus.cloudsim;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.lists.PeList;
@@ -140,8 +142,8 @@ public class HostDynamicWorkload extends Host {
 	 * 
 	 * @return the completed vms
 	 */
-	public List<Vm> getCompletedVms() {
-		List<Vm> vmsToRemove = new ArrayList<Vm>();
+	public Set<Vm> getCompletedVms() {
+		Set<Vm> vmsToRemove = new HashSet<Vm>();
 		for (Vm vm : getVmList()) {
 			if (vm.isInMigration()) {
 				continue;

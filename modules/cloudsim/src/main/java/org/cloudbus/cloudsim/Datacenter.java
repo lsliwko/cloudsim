@@ -9,9 +9,11 @@ package org.cloudbus.cloudsim;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
@@ -54,7 +56,7 @@ public class Datacenter extends SimEntity {
 	private List<Storage> storageList;
 
 	/** The vm list. */
-	private List<? extends Vm> vmList;
+	private Set<? extends Vm> vmList;
 
 	/** The scheduling delay to process each datacenter received event. */
 	private double schedulingInterval;
@@ -92,7 +94,7 @@ public class Datacenter extends SimEntity {
 		setVmAllocationPolicy(vmAllocationPolicy);
 		setLastProcessTime(0.0);
 		setStorageList(storageList);
-		setVmList(new ArrayList<Vm>());
+		setVmList(new HashSet<Vm>());
 		setSchedulingInterval(schedulingInterval);
 
 		for (Host host : getCharacteristics().getHostList()) {
@@ -1167,8 +1169,8 @@ public class Datacenter extends SimEntity {
 	 * @return the vm list
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Vm> List<T> getVmList() {
-		return (List<T>) vmList;
+	public <T extends Vm> Set<T> getVmList() {
+		return (Set<T>) vmList;
 	}
 
 	/**
@@ -1176,7 +1178,7 @@ public class Datacenter extends SimEntity {
 	 * 
 	 * @param vmList the new vm list
 	 */
-	protected <T extends Vm> void setVmList(List<T> vmList) {
+	protected <T extends Vm> void setVmList(Set<T> vmList) {
 		this.vmList = vmList;
 	}
 

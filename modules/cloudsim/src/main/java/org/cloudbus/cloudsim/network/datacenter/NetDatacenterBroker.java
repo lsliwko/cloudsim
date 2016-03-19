@@ -44,16 +44,16 @@ public class NetDatacenterBroker extends SimEntity {
 	// TODO: remove unnecessary variables
 
 	/** The list of submitted VMs. */
-	private List<? extends Vm> vmList;
+	private Set<? extends Vm> vmList;
 
 	/** The list of created VMs. */
-	private List<? extends Vm> vmsCreatedList;
+	private Set<? extends Vm> vmsCreatedList;
 
 	/** The list of submitted {@link NetworkCloudlet NetworkCloudlets}. */
-	private List<? extends NetworkCloudlet> cloudletList;
+	private Set<? extends NetworkCloudlet> cloudletList;
 
 	/** The list of submitted {@link AppCloudlet AppCloudlets}. */
-	private List<? extends AppCloudlet> appCloudletList;
+	private Set<? extends AppCloudlet> appCloudletList;
 
 	/** The list of submitted {@link AppCloudlet AppCloudlets}.
          * @todo attribute appears to be redundant with {@link #appCloudletList}
@@ -116,10 +116,10 @@ public class NetDatacenterBroker extends SimEntity {
 	public NetDatacenterBroker(String name) throws Exception {
 		super(name);
 
-		setVmList(new ArrayList<NetworkVm>());
-		setVmsCreatedList(new ArrayList<NetworkVm>());
-		setCloudletList(new ArrayList<NetworkCloudlet>());
-		setAppCloudletList(new ArrayList<AppCloudlet>());
+		setVmList(new HashSet<NetworkVm>());
+		setVmsCreatedList(new HashSet<NetworkVm>());
+		setCloudletList(new HashSet<NetworkCloudlet>());
+		setAppCloudletList(new HashSet<AppCloudlet>());
 		setCloudletSubmittedList(new HashSet<Cloudlet>());
 		setCloudletReceivedList(new HashSet<Cloudlet>());
 		appCloudletRecieved = new HashMap<Integer, Integer>();
@@ -357,7 +357,7 @@ public class NetDatacenterBroker extends SimEntity {
 
 						// Sending cloudlet
 						sendNow(
-								getVmsToDatacentersMap().get(this.getVmList().get(0).getId()),
+								getVmsToDatacentersMap().get(this.getVmList().iterator().next().getId()),
 								CloudSimTags.CLOUDLET_SUBMIT,
 								app.clist.get(i));
 					}
@@ -366,7 +366,7 @@ public class NetDatacenterBroker extends SimEntity {
 			}
 
 		}
-		setAppCloudletList(new ArrayList<AppCloudlet>());
+		setAppCloudletList(new HashSet<AppCloudlet>());
 		if (NetworkConstants.iteration < 10) {
 
 			NetworkConstants.iteration++;
@@ -458,8 +458,8 @@ public class NetDatacenterBroker extends SimEntity {
 	 * @return the vm list
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Vm> List<T> getVmList() {
-		return (List<T>) vmList;
+	public <T extends Vm> Set<T> getVmList() {
+		return (Set<T>) vmList;
 	}
 
 	/**
@@ -468,7 +468,7 @@ public class NetDatacenterBroker extends SimEntity {
 	 * @param <T> the generic type
 	 * @param vmList the new vm list
 	 */
-	protected <T extends Vm> void setVmList(List<T> vmList) {
+	protected <T extends Vm> void setVmList(Set<T> vmList) {
 		this.vmList = vmList;
 	}
 
@@ -489,7 +489,7 @@ public class NetDatacenterBroker extends SimEntity {
 	 * @param <T> the generic type
 	 * @param cloudletList the new cloudlet list
 	 */
-	protected <T extends NetworkCloudlet> void setCloudletList(List<T> cloudletList) {
+	protected <T extends NetworkCloudlet> void setCloudletList(Set<T> cloudletList) {
 		this.cloudletList = cloudletList;
 	}
 
@@ -498,7 +498,7 @@ public class NetDatacenterBroker extends SimEntity {
 		return (List<T>) appCloudletList;
 	}
 
-	public <T extends AppCloudlet> void setAppCloudletList(List<T> appCloudletList) {
+	public <T extends AppCloudlet> void setAppCloudletList(Set<T> appCloudletList) {
 		this.appCloudletList = appCloudletList;
 	}
 
@@ -551,8 +551,8 @@ public class NetDatacenterBroker extends SimEntity {
 	 * @return the vm list
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Vm> List<T> getVmsCreatedList() {
-		return (List<T>) vmsCreatedList;
+	public <T extends Vm> Set<T> getVmsCreatedList() {
+		return (Set<T>) vmsCreatedList;
 	}
 
 	/**
@@ -561,7 +561,7 @@ public class NetDatacenterBroker extends SimEntity {
 	 * @param <T> the generic type
 	 * @param vmsCreatedList the vms created list
 	 */
-	protected <T extends Vm> void setVmsCreatedList(List<T> vmsCreatedList) {
+	protected <T extends Vm> void setVmsCreatedList(Set<T> vmsCreatedList) {
 		this.vmsCreatedList = vmsCreatedList;
 	}
 
