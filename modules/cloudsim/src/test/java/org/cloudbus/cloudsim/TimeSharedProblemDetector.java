@@ -12,8 +12,10 @@ package org.cloudbus.cloudsim;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
@@ -35,7 +37,7 @@ import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
 public class TimeSharedProblemDetector {
 
 	/** The cloudlet list. */
-	private static List<Cloudlet> cloudletList;
+	private static Set<Cloudlet> cloudletList;
 
 	/** The vmlist. */
 	private static List<Vm> vmlist;
@@ -97,7 +99,7 @@ public class TimeSharedProblemDetector {
 			broker.submitVmList(vmlist);
 
 			// Fifth step: Create one Cloudlet
-			cloudletList = new ArrayList<Cloudlet>();
+			cloudletList = new HashSet<Cloudlet>();
 
 			// Cloudlet properties
 			int id = 0;
@@ -133,7 +135,7 @@ public class TimeSharedProblemDetector {
 			CloudSim.stopSimulation();
 
 			//Final step: Print results when simulation is over
-			List<Cloudlet> newList = broker.getCloudletReceivedList();
+			Set<Cloudlet> newList = broker.getCloudletReceivedList();
 			printCloudletList(newList);
 
 			Log.printLine("CloudSimExample1 finished!");
@@ -239,10 +241,7 @@ public class TimeSharedProblemDetector {
 	 *
 	 * @param list list of Cloudlets
 	 */
-	private static void printCloudletList(List<Cloudlet> list) {
-		int size = list.size();
-		Cloudlet cloudlet;
-
+	private static void printCloudletList(Set<Cloudlet> list) {
 		String indent = "    ";
 		Log.printLine();
 		Log.printLine("========== OUTPUT ==========");
@@ -251,8 +250,7 @@ public class TimeSharedProblemDetector {
 				+ "Start Time" + indent + "Finish Time");
 
 		DecimalFormat dft = new DecimalFormat("###.##");
-		for (int i = 0; i < size; i++) {
-			cloudlet = list.get(i);
+		for (Cloudlet cloudlet : list) {
 			Log.print(indent + cloudlet.getCloudletId() + indent + indent);
 
 			if (cloudlet.getCloudletStatus() == Cloudlet.SUCCESS) {

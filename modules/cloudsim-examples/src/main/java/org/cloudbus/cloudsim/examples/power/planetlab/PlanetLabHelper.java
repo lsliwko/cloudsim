@@ -3,7 +3,9 @@ package org.cloudbus.cloudsim.examples.power.planetlab;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.UtilizationModel;
@@ -35,9 +37,9 @@ public class PlanetLabHelper {
 	 * @return the list
 	 * @throws FileNotFoundException the file not found exception
 	 */
-	public static List<Cloudlet> createCloudletListPlanetLab(int brokerId, String inputFolderName)
+	public static Set<Cloudlet> createCloudletListPlanetLab(int brokerId, String inputFolderName)
 			throws FileNotFoundException {
-		List<Cloudlet> list = new ArrayList<Cloudlet>();
+		Set<Cloudlet> list = new HashSet<Cloudlet>();
 
 		long fileSize = 300;
 		long outputSize = 300;

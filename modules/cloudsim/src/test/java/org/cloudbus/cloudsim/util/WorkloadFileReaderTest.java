@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.junit.After;
@@ -40,7 +41,7 @@ public class WorkloadFileReaderTest {
 		+ "test"
 		+ File.separator
 		+ "LCG.swf.gz", 1);
-	List<Cloudlet> cloudletlist = r.generateWorkload();
+	Set<Cloudlet> cloudletlist = r.generateWorkload();
 	assertEquals(188041, cloudletlist.size());
 
 	for (Cloudlet cloudlet : cloudletlist) {

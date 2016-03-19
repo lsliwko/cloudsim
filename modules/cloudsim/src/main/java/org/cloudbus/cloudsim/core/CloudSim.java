@@ -10,6 +10,7 @@ package org.cloudbus.cloudsim.core;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -884,6 +885,8 @@ public class CloudSim {
 			runStart();
 		}
 		while (true) {
+			Log.printLine("Running clock tick " + new Date());
+			
 			if (runClockTick() || abruptTerminate) {
 				break;
 			}

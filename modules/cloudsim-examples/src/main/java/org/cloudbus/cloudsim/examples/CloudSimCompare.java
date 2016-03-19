@@ -13,8 +13,10 @@ package org.cloudbus.cloudsim.examples;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
@@ -39,10 +41,10 @@ import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
  * An example showing how to create
  * scalable simulations.
  */
-public class CloudSimExample6 {
+public class CloudSimCompare {
 
 	/** The cloudlet list. */
-	private static List<Cloudlet> cloudletList;
+	private static Set<Cloudlet> cloudletList;
 
 	/** The vmlist. */
 	private static List<Vm> vmlist;
@@ -75,9 +77,9 @@ public class CloudSimExample6 {
 	}
 
 
-	private static List<Cloudlet> createCloudlet(int userId, int cloudlets){
+	private static Set<Cloudlet> createCloudlet(int userId, int cloudlets){
 		// Creates a container to store Cloudlets
-		LinkedList<Cloudlet> list = new LinkedList<Cloudlet>();
+		HashSet<Cloudlet> list = new HashSet<Cloudlet>();
 
 		//cloudlet parameters
 		long length = 1000;
@@ -106,6 +108,10 @@ public class CloudSimExample6 {
 	 */
 	public static void main(String[] args) {
 		Log.printLine("Starting CloudSimExample6...");
+		
+		int tasksCount	= Integer.parseInt(args[0]);
+		int vmsCount	= Integer.parseInt(args[1]);
+		int hostsCount	= Integer.parseInt(args[2]);
 
 		try {
 			// First step: Initialize the CloudSim package. It should be called
@@ -120,17 +126,15 @@ public class CloudSimExample6 {
 			// Second step: Create Datacenters
 			//Datacenters are the resource providers in CloudSim. We need at list one of them to run a CloudSim simulation
 			@SuppressWarnings("unused")
-			Datacenter datacenter0 = createDatacenter("Datacenter_0");
-			@SuppressWarnings("unused")
-			Datacenter datacenter1 = createDatacenter("Datacenter_1");
+			Datacenter datacenter1 = createDatacenter("Datacenter_1", hostsCount);
 
 			//Third step: Create Broker
 			DatacenterBroker broker = createBroker();
 			int brokerId = broker.getId();
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
-			vmlist = createVM(brokerId,20); //creating 20 vms
-			cloudletList = createCloudlet(brokerId,40); // creating 40 cloudlets
+			vmlist = createVM(brokerId,vmsCount); //creating 20 vms
+			cloudletList = createCloudlet(brokerId,tasksCount); // creating 40 cloudlets
 
 			broker.submitVmList(vmlist);
 			broker.submitCloudletList(cloudletList);
@@ -139,7 +143,7 @@ public class CloudSimExample6 {
 			CloudSim.startSimulation();
 
 			// Final step: Print results when simulation is over
-			List<Cloudlet> newList = broker.getCloudletReceivedList();
+			Set<Cloudlet> newList = broker.getCloudletReceivedList();
 
 			CloudSim.stopSimulation();
 
@@ -154,7 +158,7 @@ public class CloudSimExample6 {
 		}
 	}
 
-	private static Datacenter createDatacenter(String name){
+	private static Datacenter createDatacenter(String name, int hostsCount){
 
 		// Here are the steps needed to create a PowerDatacenter:
 		// 1. We need to create a list to store one or more
@@ -181,60 +185,26 @@ public class CloudSimExample6 {
 		peList2.add(new Pe(0, new PeProvisionerSimple(mips)));
 		peList2.add(new Pe(1, new PeProvisionerSimple(mips)));
 
-		//4. Create Hosts with its id and list of PEs and add them to the list of machines
-		int hostId=0;
-		int ram = 2048; //host memory (MB)
-		long storage = 1000000; //host storage
-		int bw = 10000;
+		for (int hostId=0; hostId<hostsCount; hostId++) {
+			//4. Create Hosts with its id and list of PEs and add them to the list of machines
+			int ram = 2048; //host memory (MB)
+			long storage = 1000000; //host storage
+			int bw = 10000;
+	
+			hostList.add(
+	    			new Host(
+	    				hostId,
+	    				new RamProvisionerSimple(ram),
+	    				new BwProvisionerSimple(bw),
+	    				storage,
+	    				peList1,
+	    				new VmSchedulerTimeShared(peList1)
+	    			)
+	    		); // This is our first machine
 
-		hostList.add(
-    			new Host(
-    				hostId,
-    				new RamProvisionerSimple(ram),
-    				new BwProvisionerSimple(bw),
-    				storage,
-    				peList1,
-    				new VmSchedulerTimeShared(peList1)
-    			)
-    		); // This is our first machine
-
-		hostId++;
-
-		hostList.add(
-    			new Host(
-    				hostId,
-    				new RamProvisionerSimple(ram),
-    				new BwProvisionerSimple(bw),
-    				storage,
-    				peList2,
-    				new VmSchedulerTimeShared(peList2)
-    			)
-    		); // Second machine
+		}
 
 
-		//To create a host with a space-shared allocation policy for PEs to VMs:
-		//hostList.add(
-    	//		new Host(
-    	//			hostId,
-    	//			new CpuProvisionerSimple(peList1),
-    	//			new RamProvisionerSimple(ram),
-    	//			new BwProvisionerSimple(bw),
-    	//			storage,
-    	//			new VmSchedulerSpaceShared(peList1)
-    	//		)
-    	//	);
-
-		//To create a host with a oportunistic space-shared allocation policy for PEs to VMs:
-		//hostList.add(
-    	//		new Host(
-    	//			hostId,
-    	//			new CpuProvisionerSimple(peList1),
-    	//			new RamProvisionerSimple(ram),
-    	//			new BwProvisionerSimple(bw),
-    	//			storage,
-    	//			new VmSchedulerOportunisticSpaceShared(peList1)
-    	//		)
-    	//	);
 
 
 		// 5. Create a DatacenterCharacteristics object that stores the
@@ -284,10 +254,7 @@ public class CloudSimExample6 {
 	 * Prints the Cloudlet objects
 	 * @param list  list of Cloudlets
 	 */
-	private static void printCloudletList(List<Cloudlet> list) {
-		int size = list.size();
-		Cloudlet cloudlet;
-
+	private static void printCloudletList(Set<Cloudlet> list) {
 		String indent = "    ";
 		Log.printLine();
 		Log.printLine("========== OUTPUT ==========");
@@ -295,8 +262,7 @@ public class CloudSimExample6 {
 				"Data center ID" + indent + "VM ID" + indent + indent + "Time" + indent + "Start Time" + indent + "Finish Time");
 
 		DecimalFormat dft = new DecimalFormat("###.##");
-		for (int i = 0; i < size; i++) {
-			cloudlet = list.get(i);
+		for (Cloudlet cloudlet : list) {
 			Log.print(indent + cloudlet.getCloudletId() + indent + indent);
 
 			if (cloudlet.getCloudletStatus() == Cloudlet.SUCCESS){
@@ -310,3 +276,4 @@ public class CloudSimExample6 {
 
 	}
 }
+

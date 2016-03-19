@@ -10,9 +10,11 @@ package org.cloudbus.cloudsim.network.datacenter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.DatacenterCharacteristics;
@@ -60,12 +62,12 @@ public class NetDatacenterBroker extends SimEntity {
 
 	/** The list of submitted {@link Cloudlet Cloudlets}.
          */
-	private List<? extends Cloudlet> cloudletSubmittedList;
+	private Set<? extends Cloudlet> cloudletSubmittedList;
 
 	/** The list of received {@link Cloudlet Cloudlets}.
          * @todo attribute appears to be redundant with {@link #cloudletSubmittedList}
          */
-	private List<? extends Cloudlet> cloudletReceivedList;
+	private Set<? extends Cloudlet> cloudletReceivedList;
 
 	/** The number of submitted cloudlets. */
 	private int cloudletsSubmitted;
@@ -118,8 +120,8 @@ public class NetDatacenterBroker extends SimEntity {
 		setVmsCreatedList(new ArrayList<NetworkVm>());
 		setCloudletList(new ArrayList<NetworkCloudlet>());
 		setAppCloudletList(new ArrayList<AppCloudlet>());
-		setCloudletSubmittedList(new ArrayList<Cloudlet>());
-		setCloudletReceivedList(new ArrayList<Cloudlet>());
+		setCloudletSubmittedList(new HashSet<Cloudlet>());
+		setCloudletReceivedList(new HashSet<Cloudlet>());
 		appCloudletRecieved = new HashMap<Integer, Integer>();
 
 		cloudletsSubmitted = 0;
@@ -517,7 +519,7 @@ public class NetDatacenterBroker extends SimEntity {
 	 * @param <T> the generic type
 	 * @param cloudletSubmittedList the new cloudlet submitted list
 	 */
-	protected <T extends Cloudlet> void setCloudletSubmittedList(List<T> cloudletSubmittedList) {
+	protected <T extends Cloudlet> void setCloudletSubmittedList(Set<T> cloudletSubmittedList) {
 		this.cloudletSubmittedList = cloudletSubmittedList;
 	}
 
@@ -528,8 +530,8 @@ public class NetDatacenterBroker extends SimEntity {
 	 * @return the cloudlet received list
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Cloudlet> List<T> getCloudletReceivedList() {
-		return (List<T>) cloudletReceivedList;
+	public <T extends Cloudlet> Set<T> getCloudletReceivedList() {
+		return (Set<T>) cloudletReceivedList;
 	}
 
 	/**
@@ -538,7 +540,7 @@ public class NetDatacenterBroker extends SimEntity {
 	 * @param <T> the generic type
 	 * @param cloudletReceivedList the new cloudlet received list
 	 */
-	protected <T extends Cloudlet> void setCloudletReceivedList(List<T> cloudletReceivedList) {
+	protected <T extends Cloudlet> void setCloudletReceivedList(Set<T> cloudletReceivedList) {
 		this.cloudletReceivedList = cloudletReceivedList;
 	}
 

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.DatacenterBroker;
@@ -49,7 +50,7 @@ public abstract class RunnerAbstract {
 	protected static DatacenterBroker broker;
 
 	/** The cloudlet list. */
-	protected static List<Cloudlet> cloudletList;
+	protected static Set<Cloudlet> cloudletList;
 
 	/** The vm list. */
 	protected static List<Vm> vmList;
@@ -172,7 +173,7 @@ public abstract class RunnerAbstract {
 			CloudSim.terminateSimulation(Constants.SIMULATION_LIMIT);
 			double lastClock = CloudSim.startSimulation();
 
-			List<Cloudlet> newList = broker.getCloudletReceivedList();
+			Set<Cloudlet> newList = broker.getCloudletReceivedList();
 			Log.printLine("Received " + newList.size() + " cloudlets");
 
 			CloudSim.stopSimulation();

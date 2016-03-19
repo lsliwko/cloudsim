@@ -3,6 +3,7 @@ package org.cloudbus.cloudsim.examples.power.random;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.DatacenterBroker;
@@ -53,7 +54,7 @@ public class NonPowerAware {
 			DatacenterBroker broker = Helper.createBroker();
 			int brokerId = broker.getId();
 
-			List<Cloudlet> cloudletList = RandomHelper.createCloudletList(
+			Set<Cloudlet> cloudletList = RandomHelper.createCloudletList(
 					brokerId,
 					RandomConstants.NUMBER_OF_VMS);
 			List<Vm> vmList = Helper.createVmList(brokerId, cloudletList.size());
@@ -73,7 +74,7 @@ public class NonPowerAware {
 			CloudSim.terminateSimulation(Constants.SIMULATION_LIMIT);
 			double lastClock = CloudSim.startSimulation();
 
-			List<Cloudlet> newList = broker.getCloudletReceivedList();
+			Set<Cloudlet> newList = broker.getCloudletReceivedList();
 			Log.printLine("Received " + newList.size() + " cloudlets");
 
 			CloudSim.stopSimulation();

@@ -4,7 +4,9 @@
 package org.cloudbus.cloudsim.examples.power.random;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.UtilizationModel;
@@ -36,8 +38,8 @@ public class RandomHelper {
 	 * 
 	 * @return the list< cloudlet>
 	 */
-	public static List<Cloudlet> createCloudletList(int brokerId, int cloudletsNumber) {
-		List<Cloudlet> list = new ArrayList<Cloudlet>();
+	public static Set<Cloudlet> createCloudletList(int brokerId, int cloudletsNumber) {
+		Set<Cloudlet> list = new HashSet<Cloudlet>();
 
 		long fileSize = 300;
 		long outputSize = 300;

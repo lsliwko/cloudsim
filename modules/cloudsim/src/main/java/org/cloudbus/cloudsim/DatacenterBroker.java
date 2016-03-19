@@ -10,9 +10,11 @@ package org.cloudbus.cloudsim;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
@@ -40,13 +42,13 @@ public class DatacenterBroker extends SimEntity {
 	/** The list of cloudlet submitted to the broker. 
          * @see #submitCloudletList(java.util.List) 
          */
-	protected List<? extends Cloudlet> cloudletList;
+	protected Set<? extends Cloudlet> cloudletList;
 
 	/** The list of submitted cloudlets. */
-	protected List<? extends Cloudlet> cloudletSubmittedList;
+	protected Set<? extends Cloudlet> cloudletSubmittedList;
 
 	/** The list of received cloudlet. */
-	protected List<? extends Cloudlet> cloudletReceivedList;
+	protected Set<? extends Cloudlet> cloudletReceivedList;
 
 	/** The number of submitted cloudlets. */
 	protected int cloudletsSubmitted;
@@ -86,11 +88,11 @@ public class DatacenterBroker extends SimEntity {
 	public DatacenterBroker(String name) throws Exception {
 		super(name);
 
-		setVmList(new ArrayList<Vm>());
-		setVmsCreatedList(new ArrayList<Vm>());
-		setCloudletList(new ArrayList<Cloudlet>());
-		setCloudletSubmittedList(new ArrayList<Cloudlet>());
-		setCloudletReceivedList(new ArrayList<Cloudlet>());
+		setVmList(new LinkedList<Vm>());
+		setVmsCreatedList(new LinkedList<Vm>());
+		setCloudletList(new HashSet<Cloudlet>());
+		setCloudletSubmittedList(new HashSet<Cloudlet>());
+		setCloudletReceivedList(new HashSet<Cloudlet>());
 
 		cloudletsSubmitted = 0;
 		setVmsRequested(0);
@@ -129,7 +131,7 @@ public class DatacenterBroker extends SimEntity {
          * The method {@link #submitVmList(java.util.List)} may have
          * be checked too.
 	 */
-	public void submitCloudletList(List<? extends Cloudlet> list) {
+	public void submitCloudletList(Set<? extends Cloudlet> list) {
 		getCloudletList().addAll(list);
 	}
 
@@ -349,7 +351,7 @@ public class DatacenterBroker extends SimEntity {
 	 */
 	protected void submitCloudlets() {
 		int vmIndex = 0;
-		List<Cloudlet> successfullySubmitted = new ArrayList<Cloudlet>();
+		Set<Cloudlet> successfullySubmitted = new HashSet<Cloudlet>();
 		for (Cloudlet cloudlet : getCloudletList()) {
 			Vm vm;
 			// if user didn't bind this cloudlet and it has not been executed yet
@@ -447,8 +449,8 @@ public class DatacenterBroker extends SimEntity {
 	 * @return the cloudlet list
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Cloudlet> List<T> getCloudletList() {
-		return (List<T>) cloudletList;
+	public <T extends Cloudlet> Set<T> getCloudletList() {
+		return (Set<T>) cloudletList;
 	}
 
 	/**
@@ -457,7 +459,7 @@ public class DatacenterBroker extends SimEntity {
 	 * @param <T> the generic type
 	 * @param cloudletList the new cloudlet list
 	 */
-	protected <T extends Cloudlet> void setCloudletList(List<T> cloudletList) {
+	protected <T extends Cloudlet> void setCloudletList(Set<T> cloudletList) {
 		this.cloudletList = cloudletList;
 	}
 
@@ -468,8 +470,8 @@ public class DatacenterBroker extends SimEntity {
 	 * @return the cloudlet submitted list
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Cloudlet> List<T> getCloudletSubmittedList() {
-		return (List<T>) cloudletSubmittedList;
+	public <T extends Cloudlet> Set<T> getCloudletSubmittedList() {
+		return (Set<T>) cloudletSubmittedList;
 	}
 
 	/**
@@ -478,7 +480,7 @@ public class DatacenterBroker extends SimEntity {
 	 * @param <T> the generic type
 	 * @param cloudletSubmittedList the new cloudlet submitted list
 	 */
-	protected <T extends Cloudlet> void setCloudletSubmittedList(List<T> cloudletSubmittedList) {
+	protected <T extends Cloudlet> void setCloudletSubmittedList(Set<T> cloudletSubmittedList) {
 		this.cloudletSubmittedList = cloudletSubmittedList;
 	}
 
@@ -489,8 +491,8 @@ public class DatacenterBroker extends SimEntity {
 	 * @return the cloudlet received list
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Cloudlet> List<T> getCloudletReceivedList() {
-		return (List<T>) cloudletReceivedList;
+	public <T extends Cloudlet> Set<T> getCloudletReceivedList() {
+		return (Set<T>) cloudletReceivedList;
 	}
 
 	/**
@@ -499,7 +501,7 @@ public class DatacenterBroker extends SimEntity {
 	 * @param <T> the generic type
 	 * @param cloudletReceivedList the new cloudlet received list
 	 */
-	protected <T extends Cloudlet> void setCloudletReceivedList(List<T> cloudletReceivedList) {
+	protected <T extends Cloudlet> void setCloudletReceivedList(Set<T> cloudletReceivedList) {
 		this.cloudletReceivedList = cloudletReceivedList;
 	}
 

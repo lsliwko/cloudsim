@@ -11,6 +11,7 @@ package org.cloudbus.cloudsim.lists;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Cloudlet;
 
@@ -29,7 +30,7 @@ public class CloudletList {
 	 * @param id the Cloudlet id
 	 * @return a Cloudlet with the given ID or $null if not found
 	 */
-	public static <T extends Cloudlet> T getById(List<T> cloudletList, int id) {
+	public static <T extends Cloudlet> T getById(Set<T> cloudletList, int id) {
 		for (T cloudlet : cloudletList) {
 			if (cloudlet.getCloudletId() == id) {
 				return cloudlet;

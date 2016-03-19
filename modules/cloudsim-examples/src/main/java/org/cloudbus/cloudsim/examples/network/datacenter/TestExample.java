@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.DatacenterCharacteristics;
@@ -72,7 +73,7 @@ public class TestExample {
 			CloudSim.stopSimulation();
 
 			// Final step: Print results when simulation is over
-			List<Cloudlet> newList = broker.getCloudletReceivedList();
+			Set<Cloudlet> newList = broker.getCloudletReceivedList();
 			printCloudletList(newList);
 			System.out.println("numberofcloudlet " + newList.size() + " Cached "
 					+ NetDatacenterBroker.cachedcloudlet + " Data transfered "
@@ -256,9 +257,8 @@ public class TestExample {
 	 *            list of Cloudlets
 	 * @throws IOException
 	 */
-	private static void printCloudletList(List<Cloudlet> list) throws IOException {
-		int size = list.size();
-		Cloudlet cloudlet;
+	private static void printCloudletList(Set<Cloudlet> list) throws IOException {
+
 		String indent = "    ";
 		Log.printLine();
 		Log.printLine("========== OUTPUT ==========");
@@ -266,8 +266,7 @@ public class TestExample {
 				+ indent + "Time" + indent + "Start Time" + indent + "Finish Time");
 
 		DecimalFormat dft = new DecimalFormat("###.##");
-		for (int i = 0; i < size; i++) {
-			cloudlet = list.get(i);
+		for (Cloudlet cloudlet : list) {
 			Log.print(indent + cloudlet.getCloudletId() + indent + indent);
 
 			if (cloudlet.getCloudletStatus() == Cloudlet.SUCCESS) {

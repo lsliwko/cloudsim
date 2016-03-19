@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.CloudletSchedulerDynamicWorkload;
@@ -718,10 +719,7 @@ public class Helper {
 	 * 
 	 * @param list list of Cloudlets
 	 */
-	public static void printCloudletList(List<Cloudlet> list) {
-		int size = list.size();
-		Cloudlet cloudlet;
-
+	public static void printCloudletList(Set<Cloudlet> list) {
 		String indent = "\t";
 		Log.printLine();
 		Log.printLine("========== OUTPUT ==========");
@@ -729,8 +727,7 @@ public class Helper {
 				+ "Time" + indent + "Start Time" + indent + "Finish Time");
 
 		DecimalFormat dft = new DecimalFormat("###.##");
-		for (int i = 0; i < size; i++) {
-			cloudlet = list.get(i);
+		for (Cloudlet cloudlet : list) {
 			Log.print(indent + cloudlet.getCloudletId());
 
 			if (cloudlet.getCloudletStatus() == Cloudlet.SUCCESS) {

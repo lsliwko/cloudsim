@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -81,7 +82,7 @@ public class WorkloadFileReader implements WorkloadModel {
     /**
      * List of Cloudlets created from the trace {@link #file}.
      */
-    private ArrayList<Cloudlet> jobs = null;
+    private HashSet<Cloudlet> jobs = null;
 
     
     /* Index of fields from the Standard Workload Format. */
@@ -188,9 +189,9 @@ public class WorkloadFileReader implements WorkloadModel {
      * @see #file
      */
     @Override
-    public ArrayList<Cloudlet> generateWorkload() {
+    public HashSet<Cloudlet> generateWorkload() {
             if (jobs == null) {
-                    jobs = new ArrayList<Cloudlet>();
+                    jobs = new HashSet<Cloudlet>();
 
                     // create a temp array
                     fieldArray = new String[MAX_FIELD];
