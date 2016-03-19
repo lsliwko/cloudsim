@@ -107,7 +107,8 @@ public class CloudSimCompare {
 	 * Creates main() to run this example
 	 */
 	public static void main(String[] args) {
-		Log.printLine("Starting CloudSimExample6...");
+		Log.printLine("Starting CloudSimCompare...");
+		long start	= System.currentTimeMillis();
 		
 		int tasksCount	= Integer.parseInt(args[0]);
 		int vmsCount	= Integer.parseInt(args[1]);
@@ -149,7 +150,8 @@ public class CloudSimCompare {
 
 			printCloudletList(newList);
 
-			Log.printLine("CloudSimExample6 finished!");
+			long end	= System.currentTimeMillis();
+			Log.printLine("CloudSimCompare finished in " + ((end-start)/1000) + "ms");
 		}
 		catch (Exception e)
 		{
